@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Mummy ❤️</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ================  ✨ CUSTOMIZATION ZONE  ✨  =================
+   Change everything you need HERE. Nothing else in the file
+   needs to be touched to personalize this page.
+   ============================================================ */
+:root{
+  /* ---------- 🎨 THEME COLORS ---------- */
+  --pink-50:#fff5f8;
+  --pink-100:#ffe4ec;
+  --pink-200:#ffc9dd;
+  --pink-300:#ffb0cf;
+  --pink-400:#ff8fb8;
+  --pink-500:#ff6f9c;
+  --pink-deep:#e0567d;
+  --gold:#f3c565;
+  --white:#ffffff;
+  --ink:#4a2a3a;
+  --ink-soft:#7a5566;
+  --glass: rgba(255,255,255,0.45);
+  --glass-border: rgba(255,255,255,0.65);
+
+  /* ---------- 🖋 FONTS ---------- */
+  --font-script:'Great Vibes', cursive;
+  --font-body:'Poppins', sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     ✏️  EDIT YOUR DETAILS HERE (no coding needed below)
+     ========================================================= -->
+<script>
+  window.SITE_CONFIG = {
+    motherName: "Mummy",                 // Her name / how you address her
+    birthdayDateLabel: "1 Aug 1980",     // Set your mummy's birth date here
+    footerName: "Your Loving Son",       // Signed name in footer
+    musicFile: "music/birthday-song.mp3",// 🎵 Replace this path with your own mp3 later
+    photos: [
+      // 📸 Replace "src" with your own photo paths/URLs. Keep the same structure.
+      { src: "images/1.jpeg", caption: "Your smile lights up every room" },
+      { src: "images/2.jpeg", caption: "The hands that raised me with love" },
+      { src: "images/3.jpeg", caption: "Every memory with you is a treasure" },
+      { src: "images/4.jpeg", caption: "My first home, my forever comfort" },
+      { src: "images/5.jpeg", caption: "Your laughter is my favorite melody" },
+      { src: "images/6.jpeg", caption: "Together, always and forever" }
+    ]
+  };
+</script>
+
+<!-- =========================================================
+     LOADER
+     ========================================================= -->
+<div id="loader">
+  <div class="loader-heart">❤</div>
+  <p class="loader-text">Loading Something Special...</p>
+</div>
+
+<!-- =========================================================
+     SCROLL PROGRESS BAR
+     ========================================================= -->
+<div id="scrollProgress"></div>
+
+<!-- =========================================================
+     BACKGROUND CANVAS (floating hearts + particles)
+     ========================================================= -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- Cursor glow + click hearts live in fixed layer -->
+<div id="cursorGlow"></div>
+
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <span class="nav-logo">Mummy ❤️</span>
+    <div class="nav-links">
+      <a href="#hero" class="nav-link" data-label="Home">Home</a>
+      <a href="#gallery" class="nav-link" data-label="Memories">Memories</a>
+      <a href="#letter" class="nav-link" data-label="Letter">Letter</a>
+      <a href="#timeline" class="nav-link" data-label="Journey">Journey</a>
+      <a href="#cake" class="nav-link" data-label="Cake">Cake</a>
+      <a href="#surprise" class="nav-link" data-label="Surprise">Surprise</a>
+    </div>
+  </div>
+</nav>
+
+<!-- =========================================================
+     HERO SECTION
+     ========================================================= -->
+<section id="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow fade-up">A little something, made with love</p>
+    <h1 class="hero-title fade-up delay-1">Happy Birthday <span class="script-text" id="heroMotherName">Mummy</span> ❤️</h1>
+    <p class="hero-sub fade-up delay-2">
+      The strongest woman in my life,<br>
+      my first teacher,<br>
+      my biggest supporter,<br>
+      and my forever home.
+    </p>
+    <p class="hero-date fade-up delay-3" id="heroDate"></p>
+
+    <div class="typewriter-wrap fade-up delay-3">
+      <span id="typewriter"></span><span class="cursor-blink">|</span>
+    </div>
+
+    <div class="hero-buttons fade-up delay-4">
+      <button class="btn btn-primary ripple" onclick="scrollToSurprise()">Open My Surprise 🎁</button>
+      <button class="btn btn-outline ripple" id="musicHeroBtn" onclick="toggleMusic()">Play Music 🎵</button>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span></span>
+  </div>
+</section>
+
+<!-- =========================================================
+     MEMORY GALLERY
+     ========================================================= -->
+<section id="gallery" class="section">
+  <div class="section-header fade-up">
+    <p class="eyebrow">Frozen in Time</p>
+    <h2>Memory Gallery</h2>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"><!-- injected by JS --></div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+  <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+  <img id="lightboxImg" src="" alt="Memory">
+  <p id="lightboxCaption"></p>
+</div>
+
+<!-- =========================================================
+     LETTER / MESSAGE SECTION
+     ========================================================= -->
+<section id="letter" class="section">
+  <div class="section-header fade-up">
+    <p class="eyebrow">In My Own Words</p>
+    <h2>A Letter From My Heart ❤️</h2>
+  </div>
+  <div class="letter-card fade-up">
+    <p class="letter-p">Dear Mummy,</p>
+    <p class="letter-p">Happy Birthday to the most beautiful heart in my life. You have always been my strength, my comfort, and my biggest blessing. Your love has shaped me in the best way, and I feel so lucky to have you.</p>
+    <p class="letter-p">Thank you for every sacrifice, every prayer, and every moment of care you gave me. Even when I didn’t say it enough, I always felt your love around me.</p>
+    <p class="letter-p">You are my safe place, my inspiration, and my forever home. I hope today brings you all the happiness you deserve.</p>
+    <p class="letter-p">I love you more than words can say. Happy Birthday, Mummy.</p>
+    <p class="letter-signature">Forever yours, <span id="letterSign">Your Loving Son</span></p>
+  </div>
+</section>
+
+<!-- =========================================================
+     TIMELINE
+     ========================================================= -->
+<section id="timeline" class="section">
+  <div class="section-header fade-up">
+    <p class="eyebrow">Our Story So Far</p>
+    <h2>Our Journey Together</h2>
+  </div>
+  <div class="timeline-wrap">
+    <div class="timeline-line"></div>
+    <div class="timeline-item fade-left">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card"><h3>My Childhood</h3><p>You were my whole world, my comfort, my very first friend.</p></div>
+    </div>
+    <div class="timeline-item fade-right">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card"><h3>School Life</h3><p>You packed lunches, wiped tears, and cheered louder than anyone.</p></div>
+    </div>
+    <div class="timeline-item fade-left">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card"><h3>College</h3><p>Even from a distance, your love reached me every single day.</p></div>
+    </div>
+    <div class="timeline-item fade-right">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card"><h3>Today</h3><p>I finally understand every sacrifice, and love you more for it.</p></div>
+    </div>
+    <div class="timeline-item fade-left">
+      <div class="timeline-dot glow"></div>
+      <div class="timeline-card highlight"><h3>Forever Together ❤️</h3><p>No matter where life takes me, you will always be home.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     BIRTHDAY CAKE
+     ========================================================= -->
+<section id="cake" class="section">
+  <div class="section-header fade-up">
+    <p class="eyebrow">Make A Wish</p>
+    <h2>Your Birthday Cake</h2>
+  </div>
+
+  <div class="cake-stage fade-up">
+    <canvas id="confettiCanvas"></canvas>
+    <div class="happy-birthday-pop" id="cakeHBText">Happy Birthday! 🎉</div>
+
+    <div class="cake" id="cakeEl">
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="cake-top"></div>
+      <div class="cake-layer layer-1"></div>
+      <div class="cake-layer layer-2"></div>
+      <div class="cake-plate"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary ripple" id="blowBtn" onclick="blowCandles()">Blow The Candles 🎂</button>
+</section>
+
+<!-- =========================================================
+     LOVE COUNTER
+     ========================================================= -->
+<section id="counter" class="section">
+  <div class="counter-grid">
+    <div class="counter-card fade-up">
+      <span class="counter-num" data-target="9999" id="counter1">0</span>
+      <p>Infinite Love</p>
+    </div>
+    <div class="counter-card fade-up delay-1">
+      <span class="counter-num" data-target="9999" id="counter2">0</span>
+      <p>Unlimited Gratitude</p>
+    </div>
+    <div class="counter-card fade-up delay-2">
+      <span class="counter-num infinity">∞</span>
+      <p>Forever Together</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     QUOTES
+     ========================================================= -->
+<section id="quotes" class="section">
+  <div class="section-header fade-up">
+    <p class="eyebrow">Words To Live By</p>
+    <h2>A Few Truths</h2>
+  </div>
+  <div class="quotes-grid">
+    <div class="quote-card fade-up">“Home is wherever Mom is.”</div>
+    <div class="quote-card fade-up delay-1">“A mother's love never fades.”</div>
+    <div class="quote-card fade-up delay-2">“Every success begins with her blessings.”</div>
+  </div>
+</section>
+
+<!-- =========================================================
+     SURPRISE SECTION
+     ========================================================= -->
+<section id="surprise" class="section">
+  <div class="section-header fade-up">
+    <p class="eyebrow">One Last Thing</p>
+    <h2>A Little Surprise For You</h2>
+  </div>
+
+  <div class="envelope-wrap fade-up" id="envelopeWrap" onclick="openEnvelope()">
+    <div class="envelope" id="envelope">
+      <div class="envelope-back"></div>
+      <div class="envelope-heart" id="envelopeHeart">❤</div>
+      <div class="envelope-letter">
+        <p>I Love You <span id="envelopeName">Mummy</span> ❤️</p>
+      </div>
+      <div class="envelope-flap"></div>
+      <div class="envelope-body"></div>
+    </div>
+    <p class="envelope-hint">(tap the envelope)</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     FINAL SECTION
+     ========================================================= -->
+<section id="final" class="section final-section">
+  <h2 class="final-title fade-up">Thank You For Everything</h2>
+  <p class="final-text fade-up delay-1">
+    No matter how old I become,<br>
+    I will always be your little child.
+  </p>
+  <p class="final-happy fade-up delay-2">Happy Birthday ❤️</p>
+  <p class="final-love fade-up delay-3">Love You Forever.</p>
+</section>
+
+<!-- Floating controls -->
+<button id="musicFloatBtn" class="floating-btn" onclick="toggleMusic()" title="Play/Pause Music">🎵</button>
+<button id="scrollTopBtn" class="floating-btn" onclick="scrollToTop()" title="Scroll to top">⬆</button>
+
+<!-- 🎵 MUSIC ELEMENT — replace src below with your own mp3 file -->
+<audio id="bgMusic" loop preload="none">
+  <source src="music/birthday-song.mp3" type="audio/mpeg">
+</audio>
+
+<style>
+/* ============================================================
+   GLOBAL RESET & BASE
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--pink-50),var(--pink-100) 40%,var(--white));
+  overflow-x:hidden;
+  cursor:default;
+}
+::selection{background:var(--pink-300);color:var(--white);}
+
+/* Custom scrollbar */
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--pink-50);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--pink-400),var(--pink-deep));border-radius:10px;}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(160deg,var(--pink-200),var(--pink-50));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity .8s ease, visibility .8s ease;
+}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.loader-heart{
+  font-size:56px;color:var(--pink-deep);
+  animation:heartbeat 1.1s ease-in-out infinite;
+  filter:drop-shadow(0 0 12px var(--pink-300));
+}
+.loader-text{
+  font-weight:500;letter-spacing:.5px;color:var(--ink-soft);
+  animation:pulseFade 1.6s ease-in-out infinite;
+}
+@keyframes heartbeat{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
+@keyframes pulseFade{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   ============================================================ */
+#scrollProgress{
+  position:fixed;top:0;left:0;height:4px;width:0%;
+  background:linear-gradient(90deg,var(--pink-400),var(--gold));
+  z-index:3000;transition:width .1s linear;
+}
+
+/* ============================================================
+   BACKGROUND CANVAS
+   ============================================================ */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* Cursor glow */
+#cursorGlow{
+  position:fixed;top:0;left:0;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,143,184,.25),transparent 70%);
+  transform:translate(-50%,-50%);pointer-events:none;z-index:1;
+  transition:opacity .3s ease;
+}
+.click-heart{
+  position:fixed;font-size:22px;color:var(--pink-deep);pointer-events:none;z-index:2500;
+  animation:clickHeartFloat 1.1s ease-out forwards;
+}
+@keyframes clickHeartFloat{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.6);}
+  100%{opacity:0;transform:translate(-50%,-160%) scale(1.4);}
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:14px 0;
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--glass-border);
+  transition:padding .3s ease, background .3s ease;
+}
+#navbar.scrolled{padding:8px 0;background:rgba(255,255,255,.6);}
+.nav-inner{
+  max-width:1100px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-family:var(--font-script);font-size:28px;color:var(--pink-deep);}
+.nav-links{display:flex;gap:22px;}
+.nav-link{
+  position:relative;text-decoration:none;color:var(--ink-soft);font-size:14px;font-weight:500;
+  padding:6px 2px;transition:color .3s ease;
+}
+.nav-link::after{
+  content:"";position:absolute;left:0;bottom:0;height:2px;width:0;
+  background:var(--pink-deep);transition:width .3s ease;
+}
+.nav-link:hover, .nav-link.active{color:var(--pink-deep);}
+.nav-link:hover::after, .nav-link.active::after{width:100%;}
+@media (max-width:700px){
+  .nav-links{gap:12px;}
+  .nav-link{font-size:11px;}
+  .nav-logo{font-size:20px;}
+}
+
+/* ============================================================
+   SHARED SECTION STYLES
+   ============================================================ */
+.section{
+  position:relative;z-index:1;
+  max-width:1100px;margin:0 auto;
+  padding:100px 24px;
+}
+.section-header{text-align:center;margin-bottom:56px;}
+.eyebrow{
+  text-transform:uppercase;letter-spacing:3px;font-size:12px;font-weight:600;
+  color:var(--pink-deep);margin-bottom:10px;
+}
+.section-header h2{
+  font-size:clamp(30px,5vw,46px);font-weight:700;
+  background:linear-gradient(90deg,var(--pink-deep),var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* Section divider */
+.section + .section::before,
+#counter::before, #quotes::before{
+  content:"";display:block;width:80px;height:3px;margin:0 auto 60px;
+  background:linear-gradient(90deg,transparent,var(--pink-300),transparent);
+  border-radius:3px;
+}
+
+/* Glass card base */
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--glass-border);
+  border-radius:24px;
+}
+
+/* ============================================================
+   ANIMATION UTILITY CLASSES
+   ============================================================ */
+.fade-up, .fade-left, .fade-right, .scale-in{
+  opacity:0;transition:opacity .9s ease, transform .9s ease;
+}
+.fade-up{transform:translateY(40px);}
+.fade-left{transform:translateX(-60px);}
+.fade-right{transform:translateX(60px);}
+.scale-in{transform:scale(.85);}
+.fade-up.in-view, .fade-left.in-view, .fade-right.in-view, .scale-in.in-view{
+  opacity:1;transform:translate(0,0) scale(1);
+}
+.delay-1{transition-delay:.12s;}
+.delay-2{transition-delay:.24s;}
+.delay-3{transition-delay:.36s;}
+.delay-4{transition-delay:.48s;}
+.delay-5{transition-delay:.6s;}
+
+.script-text{font-family:var(--font-script);color:var(--pink-deep);}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero{
+  position:relative;z-index:1;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:120px 20px 60px;
+}
+.hero-content{max-width:760px;}
+.hero-eyebrow{
+  text-transform:uppercase;letter-spacing:3px;font-size:13px;font-weight:600;
+  color:var(--pink-deep);margin-bottom:14px;
+}
+.hero-title{
+  font-family:var(--font-script);
+  font-size:clamp(40px,8vw,80px);
+  line-height:1.15;
+  color:var(--pink-deep);
+  text-shadow:0 4px 30px rgba(255,143,184,.4);
+  margin-bottom:20px;
+}
+.hero-sub{
+  font-size:clamp(15px,2vw,19px);line-height:1.8;color:var(--ink-soft);
+  margin-bottom:18px;font-weight:400;
+}
+.hero-date{
+  font-weight:600;color:var(--pink-deep);letter-spacing:1px;
+  margin-bottom:26px;font-size:15px;
+}
+.typewriter-wrap{
+  min-height:32px;font-size:18px;font-weight:500;color:var(--ink);
+  margin-bottom:34px;
+}
+.cursor-blink{animation:blink 1s step-start infinite;color:var(--pink-deep);}
+@keyframes blink{50%{opacity:0;}}
+
+.hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn{
+  position:relative;overflow:hidden;
+  padding:15px 32px;border-radius:50px;border:none;cursor:pointer;
+  font-family:var(--font-body);font-weight:600;font-size:15px;
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--pink-400),var(--pink-deep));
+  color:#fff;box-shadow:0 10px 30px rgba(224,86,125,.35);
+}
+.btn-outline{
+  background:rgba(255,255,255,.5);
+  color:var(--pink-deep);
+  border:1.5px solid var(--pink-300);
+  backdrop-filter:blur(8px);
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(224,86,125,.4);}
+
+/* button ripple effect */
+.ripple{position:relative;}
+.ripple-circle{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.6);
+  transform:scale(0);animation:rippleAnim .6s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes rippleAnim{to{transform:scale(3);opacity:0;}}
+
+.scroll-hint{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+}
+.scroll-hint span{
+  display:block;width:22px;height:36px;border:2px solid var(--pink-deep);border-radius:14px;position:relative;
+}
+.scroll-hint span::before{
+  content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  width:4px;height:8px;background:var(--pink-deep);border-radius:3px;
+  animation:scrollDot 1.6s ease infinite;
+}
+@keyframes scrollDot{0%{opacity:1;top:6px;}70%{opacity:0;top:18px;}100%{opacity:0;top:6px;}}
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:26px;
+}
+.gallery-card{
+  position:relative;border-radius:22px;overflow:hidden;cursor:pointer;
+  aspect-ratio:3/4;
+  box-shadow:0 16px 30px rgba(224,86,125,.18);
+  border:1px solid var(--glass-border);
+  transform:translateY(0);
+  transition:transform .5s ease, box-shadow .5s ease;
+}
+.gallery-card img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s ease;
+  display:block;
+}
+.gallery-card:hover{transform:translateY(-10px);box-shadow:0 26px 44px rgba(224,86,125,.28);}
+.gallery-card:hover img{transform:scale(1.12);}
+.gallery-caption{
+  position:absolute;left:0;right:0;bottom:0;padding:16px;
+  background:linear-gradient(0deg,rgba(0,0,0,.55),transparent);
+  color:#fff;font-size:13px;font-weight:500;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .4s ease, transform .4s ease;
+}
+.gallery-card:hover .gallery-caption{opacity:1;transform:translateY(0);}
+
+.lightbox{
+  position:fixed;inset:0;z-index:5000;background:rgba(20,10,15,.9);
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+  backdrop-filter:blur(6px);
+}
+.lightbox.active{display:flex;animation:fadeIn .3s ease;}
+.lightbox img{max-width:88vw;max-height:75vh;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.lightbox p{color:#fff;font-size:15px;}
+.lightbox-close{
+  position:absolute;top:24px;right:34px;color:#fff;font-size:38px;cursor:pointer;
+  transition:transform .3s ease;
+}
+.lightbox-close:hover{transform:rotate(90deg);}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ============================================================
+   LETTER SECTION
+   ============================================================ */
+.letter-card{
+  max-width:760px;margin:0 auto;padding:50px 40px;
+  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glass-border);border-radius:28px;
+  box-shadow:0 20px 50px rgba(224,86,125,.15);
+}
+.letter-p{
+  font-size:15.5px;line-height:1.9;color:var(--ink-soft);margin-bottom:18px;
+}
+.letter-signature{
+  font-family:var(--font-script);font-size:28px;color:var(--pink-deep);margin-top:20px;
+}
+
+/* ============================================================
+   WHY I LOVE YOU CARDS
+   ============================================================ */
+.love-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;
+}
+.love-card{
+  padding:32px 24px;text-align:center;border-radius:22px;
+  background:var(--glass);backdrop-filter:blur(14px);
+  border:1px solid var(--glass-border);
+  box-shadow:0 14px 30px rgba(224,86,125,.12);
+  transition:transform .4s ease, box-shadow .4s ease;
+}
+.love-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(224,86,125,.22);}
+.love-icon{font-size:34px;margin-bottom:14px;animation:floatIcon 3s ease-in-out infinite;}
+@keyframes floatIcon{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.love-card h3{font-size:17px;margin-bottom:8px;color:var(--pink-deep);}
+.love-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;}
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline-wrap{position:relative;max-width:700px;margin:0 auto;padding:20px 0;}
+.timeline-line{
+  position:absolute;left:50%;top:0;bottom:0;width:3px;
+  background:linear-gradient(var(--pink-200),var(--pink-400));
+  transform:translateX(-50%);border-radius:3px;
+}
+.timeline-item{position:relative;width:50%;padding:24px 34px;margin-bottom:10px;}
+.timeline-item:nth-child(odd){left:0;text-align:right;}
+.timeline-item:nth-child(even){left:50%;text-align:left;}
+.timeline-dot{
+  position:absolute;top:30px;width:16px;height:16px;border-radius:50%;
+  background:var(--pink-deep);border:3px solid #fff;box-shadow:0 0 0 4px var(--pink-200);
+}
+.timeline-item:nth-child(odd) .timeline-dot{right:-8px;}
+.timeline-item:nth-child(even) .timeline-dot{left:-8px;}
+.timeline-dot.glow{box-shadow:0 0 0 4px var(--gold), 0 0 20px var(--gold);animation:glowPulse 1.6s ease infinite;}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 4px var(--gold),0 0 12px var(--gold);}50%{box-shadow:0 0 0 6px var(--gold),0 0 26px var(--gold);}}
+.timeline-card{
+  display:inline-block;padding:20px 24px;border-radius:18px;
+  background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);
+  box-shadow:0 10px 26px rgba(224,86,125,.14);
+}
+.timeline-card h3{color:var(--pink-deep);margin-bottom:6px;font-size:16px;}
+.timeline-card p{font-size:13.5px;color:var(--ink-soft);}
+.timeline-card.highlight{border:1.5px solid var(--gold);}
+@media (max-width:640px){
+  .timeline-line{left:18px;}
+  .timeline-item, .timeline-item:nth-child(even){width:100%;left:0;text-align:left;padding-left:46px;}
+  .timeline-item:nth-child(odd) .timeline-dot, .timeline-item:nth-child(even) .timeline-dot{left:10px;right:auto;}
+}
+
+/* ============================================================
+   CAKE
+   ============================================================ */
+.cake-stage{
+  position:relative;display:flex;justify-content:center;align-items:flex-end;
+  height:340px;margin-bottom:40px;
+}
+#confettiCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;}
+.cake{position:relative;width:220px;z-index:2;}
+.cake-plate{width:260px;height:16px;background:linear-gradient(var(--pink-200),var(--pink-300));border-radius:50%;margin-left:-20px;box-shadow:0 10px 20px rgba(224,86,125,.25);}
+.cake-layer{width:220px;border-radius:14px;margin:0 auto;box-shadow:inset 0 -8px 14px rgba(0,0,0,.06);}
+.layer-2{height:70px;background:linear-gradient(#fff, var(--pink-100));}
+.layer-1{height:60px;width:190px;background:linear-gradient(#ffe9f1, var(--pink-200));margin-top:-6px;}
+.cake-top{width:170px;height:26px;border-radius:50%;background:linear-gradient(#fff,var(--pink-100));margin:0 auto -8px;position:relative;z-index:3;box-shadow:0 4px 10px rgba(224,86,125,.15);}
+.candle{
+  position:absolute;bottom:100%;width:8px;height:46px;
+  background:linear-gradient(var(--gold),#e8a93f);
+  border-radius:3px;left:50%;
+  transition:opacity .6s ease, transform .6s ease;
+}
+.candle:nth-child(1){transform:translateX(-46px);}
+.candle:nth-child(2){transform:translateX(-4px);}
+.candle:nth-child(3){transform:translateX(38px);}
+.flame{
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  width:12px;height:20px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%,#fff59a,#ffb648 60%,#ff7043);
+  box-shadow:0 0 12px #ffb648;
+  animation:flicker 1s ease-in-out infinite alternate;
+  transform-origin:bottom center;
+}
+@keyframes flicker{0%{transform:translateX(-50%) scale(1) rotate(-2deg);}100%{transform:translateX(-50%) scale(1.12) rotate(2deg);}}
+.cake.blown .candle{opacity:0;transform:translateX(var(--tx,0)) translateY(-20px) scale(.4);}
+.cake.blown{filter:drop-shadow(0 0 26px rgba(255,193,90,.7));}
+.cake.blown .cake-top{box-shadow:0 0 30px rgba(255,193,90,.6);}
+
+.happy-birthday-pop{
+  position:absolute;top:20%;left:50%;transform:translate(-50%,-50%) scale(0);
+  font-family:var(--font-script);font-size:44px;color:var(--pink-deep);
+  text-shadow:0 0 20px rgba(255,143,184,.6);
+  z-index:6;opacity:0;
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1), opacity .5s ease;
+}
+.happy-birthday-pop.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+
+#blowBtn{display:block;margin:0 auto;}
+
+/* ============================================================
+   LOVE COUNTER
+   ============================================================ */
+.counter-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px;text-align:center;
+}
+.counter-card{
+  padding:36px 20px;border-radius:22px;
+  background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--glass-border);
+  box-shadow:0 14px 30px rgba(224,86,125,.14);
+}
+.counter-num{
+  display:block;font-size:44px;font-weight:800;
+  background:linear-gradient(90deg,var(--pink-deep),var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:8px;
+}
+.counter-num.infinity{font-size:52px;}
+.counter-card p{color:var(--ink-soft);font-weight:500;font-size:14px;letter-spacing:.5px;}
+
+/* ============================================================
+   QUOTES
+   ============================================================ */
+.quotes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
+.quote-card{
+  padding:34px 26px;border-radius:22px;text-align:center;
+  font-family:var(--font-script);font-size:24px;color:var(--pink-deep);
+  background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--glass-border);
+  box-shadow:0 14px 30px rgba(224,86,125,.12);
+  transition:transform .4s ease;
+}
+.quote-card:hover{transform:translateY(-6px) rotate(-1deg);}
+
+/* ============================================================
+   SURPRISE ENVELOPE
+   ============================================================ */
+.envelope-wrap{display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;}
+.envelope{position:relative;width:260px;height:170px;perspective:1000px;}
+.envelope-body{
+  position:absolute;inset:0;top:20px;border-radius:8px;
+  background:linear-gradient(135deg,var(--pink-200),var(--pink-100));
+  box-shadow:0 20px 40px rgba(224,86,125,.25);
+}
+.envelope-back{
+  position:absolute;inset:0;top:20px;border-radius:8px;
+  background:var(--pink-300);
+}
+.envelope-flap{
+  position:absolute;top:20px;left:0;width:100%;height:0;
+  border-left:130px solid transparent;
+  border-right:130px solid transparent;
+  border-top:95px solid var(--pink-300);
+  transform-origin:top;
+  transition:transform .8s cubic-bezier(.4,.2,.2,1);
+  z-index:3;
+}
+.envelope-letter{
+  position:absolute;left:16px;right:16px;top:-40px;
+  background:#fff;border-radius:10px;padding:26px 14px;
+  text-align:center;font-family:var(--font-script);font-size:22px;color:var(--pink-deep);
+  box-shadow:0 10px 24px rgba(224,86,125,.2);
+  opacity:0;transform:translateY(20px);
+  transition:transform .7s ease .3s, opacity .7s ease .3s;
+  z-index:1;
+}
+.envelope-heart{
+  position:absolute;left:50%;top:30px;transform:translate(-50%,0) scale(0);
+  font-size:30px;color:var(--pink-deep);z-index:4;
+  transition:transform .6s ease .2s, top .6s ease .2s, opacity .6s ease;
+}
+.envelope.open .envelope-flap{transform:rotateX(180deg);z-index:0;}
+.envelope.open .envelope-letter{opacity:1;transform:translateY(-46px);}
+.envelope.open .envelope-heart{transform:translate(-50%,0) scale(1.4);top:-30px;opacity:1;animation:heartbeat 1.4s ease-in-out infinite;}
+.envelope-hint{margin-top:18px;font-size:12px;color:var(--ink-soft);letter-spacing:.5px;}
+
+/* ============================================================
+   FINAL SECTION
+   ============================================================ */
+.final-section{
+  text-align:center;
+  padding:140px 24px 160px;
+  background:linear-gradient(180deg,transparent,var(--pink-100));
+}
+.final-title{font-size:clamp(28px,5vw,44px);font-weight:700;color:var(--pink-deep);margin-bottom:20px;}
+.final-text{font-size:17px;color:var(--ink-soft);line-height:1.8;margin-bottom:26px;}
+.final-happy{font-family:var(--font-script);font-size:clamp(36px,7vw,60px);color:var(--pink-deep);margin-bottom:10px;}
+.final-love{font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+#footer{
+  text-align:center;padding:30px 20px;
+  background:var(--pink-100);
+  color:var(--ink-soft);font-size:13.5px;
+  border-top:1px solid var(--glass-border);
+}
+#footer span{color:var(--pink-deep);font-weight:600;}
+
+/* ============================================================
+   FLOATING BUTTONS
+   ============================================================ */
+.floating-btn{
+  position:fixed;right:22px;width:52px;height:52px;border-radius:50%;
+  border:none;cursor:pointer;font-size:20px;z-index:1500;
+  background:linear-gradient(135deg,var(--pink-400),var(--pink-deep));
+  color:#fff;box-shadow:0 10px 24px rgba(224,86,125,.35);
+  transition:transform .3s ease, opacity .3s ease;
+}
+#musicFloatBtn{bottom:90px;}
+#scrollTopBtn{bottom:24px;opacity:0;pointer-events:none;}
+#scrollTopBtn.show{opacity:1;pointer-events:auto;}
+.floating-btn:hover{transform:scale(1.1);}
+
+/* ============================================================
+   RESPONSIVE TWEAKS
+   ============================================================ */
+@media (max-width:480px){
+  .section{padding:70px 18px;}
+  .section-header{margin-bottom:36px;}
+  .section-header h2{font-size:clamp(24px,6vw,32px);}
+  .letter-card{padding:28px 18px;}
+  .letter-p{font-size:14px;line-height:1.8;}
+  .letter-signature{font-size:24px;}
+  .hero-title{font-size:clamp(34px,9vw,48px);}
+  .hero-sub{font-size:15px;line-height:1.7;}
+  .hero-buttons{flex-direction:column;align-items:center;}
+  .btn{width:100%;max-width:280px;}
+  .gallery-grid{gap:16px;}
+  .love-grid{gap:16px;}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+</style>
+
+<script>
+/* ============================================================
+   CONFIG SHORTCUTS
+   ============================================================ */
+const CFG = window.SITE_CONFIG;
+
+document.getElementById('heroMotherName').textContent = CFG.motherName;
+document.getElementById('envelopeName').textContent = CFG.motherName;
+document.getElementById('footerName').textContent = CFG.footerName;
+document.getElementById('letterSign').textContent = CFG.footerName;
+document.getElementById('bgMusic').querySelector('source').src = CFG.musicFile;
+
+/* Date display */
+(function setDate(){
+  const el = document.getElementById('heroDate');
+  if(CFG.birthdayDateLabel){ el.textContent = CFG.birthdayDateLabel; return; }
+  const d = new Date();
+  const opts = { day:'numeric', month:'long', year:'numeric' };
+  el.textContent = d.toLocaleDateString('en-US', opts);
+})();
+
+/* ============================================================
+   LOADER — hide after 3s
+   ============================================================ */
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hide');
+    revealOnScroll(); // trigger any already-visible elements
+  }, 3000);
+});
+
+/* ============================================================
+   SCROLL PROGRESS BAR + NAVBAR STATE + ACTIVE LINK
+   ============================================================ */
+const navbar = document.getElementById('navbar');
+const progressBar = document.getElementById('scrollProgress');
+const scrollTopBtn = document.getElementById('scrollTopBtn');
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+window.addEventListener('scroll', ()=>{
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrollTop/docHeight*100) + '%';
+
+  navbar.classList.toggle('scrolled', scrollTop > 60);
+  scrollTopBtn.classList.toggle('show', scrollTop > 500);
+
+  let current = '';
+  sections.forEach(sec=>{
+    const rect = sec.getBoundingClientRect();
+    if(rect.top <= 120 && rect.bottom >= 120) current = sec.id;
+  });
+  navLinks.forEach(link=>{
+    link.classList.toggle('active', link.getAttribute('href') === '#'+current);
+  });
+}, {passive:true});
+
+function scrollToTop(){ window.scrollTo({top:0, behavior:'smooth'}); }
+function scrollToSurprise(){ document.getElementById('surprise').scrollIntoView({behavior:'smooth'}); }
+
+/* ============================================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================================ */
+const revealTargets = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-in');
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+    }
+  });
+}, { threshold:0.15 });
+revealTargets.forEach(t=>revealObserver.observe(t));
+function revealOnScroll(){ /* observer already handles it; kept for hook after loader */ }
+
+/* ============================================================
+   TYPEWRITER EFFECT (loops forever)
+   ============================================================ */
+const typewriterLines = [
+  "You are my strength.",
+  "You are my inspiration.",
+  "You are my safe place.",
+  "You are my world.",
+  "Happy Birthday " + CFG.motherName + " ❤️"
+];
+const twEl = document.getElementById('typewriter');
+let twLine = 0, twChar = 0, twDeleting = false;
+
+function typeLoop(){
+  const current = typewriterLines[twLine];
+  if(!twDeleting){
+    twChar++;
+    twEl.textContent = current.slice(0, twChar);
+    if(twChar === current.length){
+      twDeleting = true;
+      setTimeout(typeLoop, 1400);
+      return;
+    }
+  } else {
+    twChar--;
+    twEl.textContent = current.slice(0, twChar);
+    if(twChar === 0){
+      twDeleting = false;
+      twLine = (twLine + 1) % typewriterLines.length;
+    }
+  }
+  setTimeout(typeLoop, twDeleting ? 35 : 60);
+}
+typeLoop();
+
+/* ============================================================
+   BACKGROUND CANVAS — floating hearts + glowing particles
+   ============================================================ */
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+let W, H;
+function resizeCanvas(){
+  W = bgCanvas.width = window.innerWidth;
+  H = bgCanvas.height = document.documentElement.scrollHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const NUM_HEARTS = 22;
+const NUM_PARTICLES = 40;
+const bgHearts = [];
+const bgParticles = [];
+
+for(let i=0;i<NUM_HEARTS;i++){
+  bgHearts.push({
+    x: Math.random()*W,
+    y: Math.random()*H,
+    size: 10 + Math.random()*16,
+    speed: 0.2 + Math.random()*0.5,
+    drift: Math.random()*2 - 1,
+    opacity: 0.15 + Math.random()*0.35,
+    sway: Math.random()*Math.PI*2
+  });
+}
+for(let i=0;i<NUM_PARTICLES;i++){
+  bgParticles.push({
+    x: Math.random()*W,
+    y: Math.random()*H,
+    r: 1 + Math.random()*2,
+    speed: 0.1 + Math.random()*0.3,
+    opacity: 0.2 + Math.random()*0.5
+  });
+}
+
+function drawHeart(ctx,x,y,size,opacity){
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  ctx.translate(x,y);
+  ctx.beginPath();
+  const s = size/16;
+  ctx.moveTo(0, 4*s);
+  ctx.bezierCurveTo(0,-2*s, -8*s,-2*s, -8*s,4*s);
+  ctx.bezierCurveTo(-8*s,10*s, 0,14*s, 0,20*s);
+  ctx.bezierCurveTo(0,14*s, 8*s,10*s, 8*s,4*s);
+  ctx.bezierCurveTo(8*s,-2*s, 0,-2*s, 0,4*s);
+  ctx.fillStyle = "#ff8fb8";
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateBg(){
+  bgCtx.clearRect(0,0,W,H);
+  // particles (glow dots)
+  bgParticles.forEach(p=>{
+    bgCtx.save();
+    bgCtx.globalAlpha = p.opacity;
+    bgCtx.fillStyle = "#fff2f7";
+    bgCtx.shadowColor = "#ffb6c9";
+    bgCtx.shadowBlur = 8;
+    bgCtx.beginPath();
+    bgCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    bgCtx.fill();
+    bgCtx.restore();
+    p.y -= p.speed;
+    if(p.y < -10){ p.y = H + 10; p.x = Math.random()*W; }
+  });
+  // floating hearts
+  bgHearts.forEach(h=>{
+    h.sway += 0.02;
+    drawHeart(bgCtx, h.x + Math.sin(h.sway)*10, h.y, h.size, h.opacity);
+    h.y -= h.speed;
+    if(h.y < -30){ h.y = H + 30; h.x = Math.random()*W; }
+  });
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+/* ============================================================
+   CURSOR GLOW + CLICK HEARTS
+   ============================================================ */
+const cursorGlow = document.getElementById('cursorGlow');
+window.addEventListener('mousemove', (e)=>{
+  cursorGlow.style.left = e.clientX + 'px';
+  cursorGlow.style.top = e.clientY + 'px';
+});
+document.addEventListener('click', (e)=>{
+  const heart = document.createElement('div');
+  heart.className = 'click-heart';
+  heart.textContent = '❤';
+  heart.style.left = e.clientX + 'px';
+  heart.style.top = e.clientY + 'px';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(), 1100);
+});
+
+/* ============================================================
+   BUTTON RIPPLE EFFECT
+   ============================================================ */
+document.querySelectorAll('.ripple').forEach(btn=>{
+  btn.addEventListener('click', function(e){
+    const rect = this.getBoundingClientRect();
+    const circle = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    circle.className = 'ripple-circle';
+    circle.style.width = circle.style.height = size + 'px';
+    circle.style.left = (e.clientX - rect.left - size/2) + 'px';
+    circle.style.top = (e.clientY - rect.top - size/2) + 'px';
+    this.appendChild(circle);
+    setTimeout(()=>circle.remove(), 650);
+  });
+});
+
+/* ============================================================
+   MUSIC CONTROL
+   ============================================================ */
+const bgMusic = document.getElementById('bgMusic');
+let musicPlaying = false;
+function toggleMusic(){
+  if(musicPlaying){
+    bgMusic.pause();
+  } else {
+    bgMusic.play().catch(()=>{ /* file not yet added by user - fails silently */ });
+  }
+  musicPlaying = !musicPlaying;
+  const label = musicPlaying ? '⏸ Pause Music' : 'Play Music 🎵';
+  document.getElementById('musicHeroBtn').textContent = label;
+  document.getElementById('musicFloatBtn').textContent = musicPlaying ? '⏸' : '🎵';
+}
+
+/* ============================================================
+   MEMORY GALLERY — build from config + lightbox
+   ============================================================ */
+const galleryGrid = document.getElementById('galleryGrid');
+CFG.photos.forEach((photo, i)=>{
+  const card = document.createElement('div');
+  card.className = 'gallery-card fade-up' + (i%3===1 ? ' delay-1' : i%3===2 ? ' delay-2' : '');
+  card.innerHTML = `
+    <img src="${photo.src}" alt="${photo.caption}" loading="lazy">
+    <div class="gallery-caption">${photo.caption}</div>
+  `;
+  card.addEventListener('click', ()=>openLightbox(photo.src, photo.caption));
+  galleryGrid.appendChild(card);
+  revealObserver.observe(card);
+});
+
+function openLightbox(src, caption){
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxCaption').textContent = caption;
+  document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('active');
+}
+document.getElementById('lightbox').addEventListener('click', (e)=>{
+  if(e.target.id === 'lightbox') closeLightbox();
+});
+
+/* ============================================================
+   LOVE COUNTER — animate numbers on scroll into view
+   ============================================================ */
+const counterEls = document.querySelectorAll('.counter-num[data-target]');
+let countersStarted = false;
+const counterObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting && !countersStarted){
+      countersStarted = true;
+      counterEls.forEach(el=>{
+        const target = parseInt(el.dataset.target, 10);
+        let val = 0;
+        const step = Math.max(1, Math.floor(target/60));
+        const tick = ()=>{
+          val += step;
+          if(val >= target){ el.textContent = target.toLocaleString()+'+'; return; }
+          el.textContent = val.toLocaleString();
+          requestAnimationFrame(tick);
+        };
+        tick();
+      });
+    }
+  });
+}, {threshold:0.4});
+counterObserver.observe(document.getElementById('counter'));
+
+/* ============================================================
+   BIRTHDAY CAKE — blow candles + confetti + fireworks
+   ============================================================ */
+const cakeEl = document.getElementById('cakeEl');
+const blowBtn = document.getElementById('blowBtn');
+const hbText = document.getElementById('cakeHBText');
+const confettiCanvas = document.getElementById('confettiCanvas');
+const cctx = confettiCanvas.getContext('2d');
+let confettiPieces = [];
+let fireworkParticles = [];
+let confettiRunning = false;
+
+function sizeConfettiCanvas(){
+  const stage = document.querySelector('.cake-stage');
+  confettiCanvas.width = stage.clientWidth;
+  confettiCanvas.height = stage.clientHeight;
+}
+sizeConfettiCanvas();
+window.addEventListener('resize', sizeConfettiCanvas);
+
+function blowCandles(){
+  if(cakeEl.classList.contains('blown')) return;
+  cakeEl.classList.add('blown');
+  blowBtn.disabled = true;
+  blowBtn.style.opacity = '0.6';
+  hbText.classList.add('show');
+  launchConfetti();
+  launchFireworks();
+  setTimeout(()=>{ hbText.classList.remove('show'); }, 4000);
+}
+
+function launchConfetti(){
+  const colors = ['#ff8fb8','#ffc9dd','#f3c565','#fff','#e0567d'];
+  for(let i=0;i<120;i++){
+    confettiPieces.push({
+      x: confettiCanvas.width/2 + (Math.random()*60-30),
+      y: confettiCanvas.height*0.35,
+      vx: (Math.random()-0.5)*8,
+      vy: (Math.random()*-6)-2,
+      size: 4+Math.random()*5,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      rot: Math.random()*360,
+      vr: (Math.random()-0.5)*10,
+      life: 0
+    });
+  }
+  if(!confettiRunning){ confettiRunning = true; requestAnimationFrame(runConfetti); }
+}
+
+function launchFireworks(){
+  const colors = ['#ff8fb8','#f3c565','#e0567d','#fff'];
+  for(let burst=0; burst<3; burst++){
+    setTimeout(()=>{
+      const cx = 40 + Math.random()*(confettiCanvas.width-80);
+      const cy = 30 + Math.random()*60;
+      for(let i=0;i<26;i++){
+        const angle = (Math.PI*2/26)*i;
+        const speed = 2+Math.random()*2;
+        fireworkParticles.push({
+          x:cx, y:cy,
+          vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
+          color: colors[Math.floor(Math.random()*colors.length)],
+          life:0, maxLife: 50+Math.random()*20
+        });
+      }
+      if(!confettiRunning){ confettiRunning = true; requestAnimationFrame(runConfetti); }
+    }, burst*400);
+  }
+}
+
+function runConfetti(){
+  cctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+  // confetti
+  confettiPieces.forEach(p=>{
+    p.vy += 0.15; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life++;
+    cctx.save();
+    cctx.translate(p.x,p.y); cctx.rotate(p.rot*Math.PI/180);
+    cctx.globalAlpha = Math.max(0, 1 - p.life/140);
+    cctx.fillStyle = p.color;
+    cctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+    cctx.restore();
+  });
+  confettiPieces = confettiPieces.filter(p=>p.life < 140);
+
+  // fireworks
+  fireworkParticles.forEach(p=>{
+    p.vy += 0.05; p.x += p.vx; p.y += p.vy; p.life++;
+    cctx.save();
+    cctx.globalAlpha = Math.max(0, 1 - p.life/p.maxLife);
+    cctx.fillStyle = p.color;
+    cctx.beginPath(); cctx.arc(p.x,p.y,2.4,0,Math.PI*2); cctx.fill();
+    cctx.restore();
+  });
+  fireworkParticles = fireworkParticles.filter(p=>p.life < p.maxLife);
+
+  if(confettiPieces.length || fireworkParticles.length){
+    requestAnimationFrame(runConfetti);
+  } else {
+    confettiRunning = false;
+    cctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+  }
+}
+
+/* ============================================================
+   SURPRISE ENVELOPE
+   ============================================================ */
+function openEnvelope(){
+  document.getElementById('envelope').classList.add('open');
+}
+</script>
+</body>
+</html>
